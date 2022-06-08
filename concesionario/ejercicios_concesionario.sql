@@ -50,5 +50,29 @@ SELECT * from vendedores where grupo_id= 2 order by sueldo desc;
 
 select apellido, fecha_alta, grupo_id from vendedores order by fecha_alta desc limit 4;
 
+-- @@@@@ ejercicio 11 visualizar toodos los cargos de los vendedores y el numero de vendedores que hay en cada cargo
+
+select cargo,count(*) as 'total' from vendedores GROUP BY cargo;
+
+-- @@@@@ ejercicio 12 conseguir la cantidad total de dinero que se destina a sueldos
+
+select sum(sueldo) as 'dinero total' from vendedores;
+
+-- @@@@@ ejercicio 13 sacar la media de sueldos entre todos los vendedores por grupo
+select * from vendedores;
+
+select grupo_id,count(*), avg(sueldo) as 'total' from vendedores GROUP BY grupo_id ;
+
+-- @@@@@ ejercicio 13.1 en evez del id del grupo poner nombre
+
+
+select concat(g.nombre, ' - ', g.ciudad ),count(*) as 'total x grupo', avg(v.sueldo) as 'total' from vendedores v
+right join grupo g on v.grupo_id = g.id
+GROUP BY grupo_id ;
+
+-- @@@@@ ejercicio 14 visualizar las unidades totales vendidas de cada coche a cada cliente mostrando el nombre de producto, numero de cliente y la suma de unidades
+
+
+
 
 
