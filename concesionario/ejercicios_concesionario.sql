@@ -72,6 +72,106 @@ GROUP BY grupo_id ;
 
 -- @@@@@ ejercicio 14 visualizar las unidades totales vendidas de cada coche a cada cliente mostrando el nombre de producto, numero de cliente y la suma de unidades
 
+select e.coche_id, e.cantidad,co.modelo, cl.nombre from encargos e 
+inner join coches co on e.coche_id = co.id
+inner join clientes cl on e.cliente_id = cl.id ;
+
+-- @@@@@ ejercicio 15 los 2 clientes con mayor numero de coches comprados y cuantos pedidos han hecho
+
+select c.nombre, e.cantidad from clientes c
+inner join encargos e on e.cliente_id = c.id
+order by e.cantidad desc limit 2;
+
+
+-- @@@@@ ejercicio 16 obtener listado de clientes atendidos por el vendedor david lopez
+
+select * from vendedores;
+
+select * from clientes;
+
+insert into clientes values(null,2,'pepe','irun',2,current_date());
+
+desc clientes;
+
+select c.nombre, concat(v.nombre, ' ', v.apellido) as 'vendedor' from clientes c
+inner join vendedores v on v.id = c.vendedor_id where v.nombre like 'david' and v.apellido like 'lopez' ;
+
+-- @@@@@ ejercicio 17 obtener un listado con los encargos realizados por el cliente fruteria antonia
+
+select e.id,e.cantidad,c.nombre from encargos e
+inner join clientes c on e.cliente_id = c.id
+where e.cliente_id in (select id from clientes where nombre like '%fruteria antonia%');
+
+-- @@@@@ ejercicio 18 listar los clientes que han hecho un encargo del coche mercedes 
+
+select * from encargos;
+
+insert into encargos values(null,3,6,2,current_date());
+
+select cl.nombre, e.cantidad, co.marca,co.modelo from clientes cl
+inner join encargos e on cl.id = e.cliente_id
+inner join coches co on e.coche_id = co.id
+where co.marca like '%mercedes%';
+
+-- otra forma de hacerlo
+
+select * from clientes where id in
+(select cliente_id from encargos where coche_id in
+(select id from coches where marca like '%mercedes%')
+);
+
+
+-- @@@@@ ejercicio 19 obtener los vendedores con 2 o mas clientes
+
+select * from clientes;
+
+insert into clientes values (null,2,'juan','donostia',5,current_date());
+
+select vendedores.nombre, count(clientes.id) from clientes
+inner join vendedores on clientes.vendedor_id = vendedores.id
+group by vendedor_id having count(clientes.id) > 3;
+
+
+-- @@@@@ ejercicio 20 seleccionar el grupo que trabaja el vendedor con mayor salario 
+
+select * from grupo where id in 
+( select grupo_id from vendedores where sueldo = (select max(sueldo) from vendedores));
+
+-- @@@@@ ejercicio 21 obtnere los nombres y las ciudades de los clientes que hayan hecho encargos
+
+select * from clientes;
+
+select * from encargos;
+delete from encargos where id = 7;
+insert into encargos values (null,6,6,2,current_date());
+
+
+select c.id,c.nombre, c.ciudad, e.cantidad from clientes c 
+inner join encargos e on c.id = e.cliente_id ;
+
+-- @@@@@ ejercicio 21.1 obtnere los nombres y las ciudades de los clientes que hayan comprado 3 o mas coches en el encargo
+
+
+select c.id, c.nombre, c.ciudad, e.cantidad from clientes c 
+inner join encargos e on c.id = e.cliente_id 
+where cantidad >= 3
+;
+
+-- @@@@@ ejercicio 21.2 obtnere los nombres y las ciudades de los clientes que hayan hehco 2 o mas encargos
+
+select count(c.id) as 'numero de pedidos', c.id,c.nombre, c.ciudad, e.cantidad from clientes c 
+inner join encargos e on c.id = e.cliente_id group by c.id ;
+ 
+
+
+
+
+
+
+
+
+
+
 
 
 
